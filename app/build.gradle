@@ -44,6 +44,9 @@ dependencies {
     implementation "org.koin:koin-android:2.1.5"
     implementation "org.koin:koin-android-scope:2.1.5"
     implementation "org.koin:koin-androidx-viewmodel:2.1.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.5"
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"

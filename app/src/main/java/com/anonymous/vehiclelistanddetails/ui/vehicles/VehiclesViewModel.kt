@@ -34,6 +34,7 @@ class VehiclesViewModel(private val vehicleUseCase: VehicleUseCase) : ViewModel(
            is RemoteDateResponse.Error -> {
                vehiclesLiveData.value =  UIResult.Loading(false)
            }
+            else -> {}
         }
     }
 }
