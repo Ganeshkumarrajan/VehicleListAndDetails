@@ -51,7 +51,7 @@ class VehiclesMap : APIResponseMap<VehicleRemoteResult, List<VehicleDomain>> {
                 it.displayVariant ?: "",
                 it.model ?: "",
                 it.make ?: "",
-                it.modelYear ?: ""
+                it.images?.main?.url ?: ""
             )
         }
 }

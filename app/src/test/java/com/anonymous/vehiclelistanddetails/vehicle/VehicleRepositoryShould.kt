@@ -5,6 +5,8 @@ import com.anonymous.vehiclelistanddetails.data.vehicle.model.VehicleRemoteResul
 import com.anonymous.vehiclelistanddetails.data.vehicle.repo.VehicleRepositoryImpl
 import com.anonymous.vehiclelistanddetails.domain.vehicle.repository.VehicleRepository
 import com.anonymous.vehiclelistanddetails.data.vehicle.api.VehicleNetworkService
+import com.anonymous.vehiclelistanddetails.data.vehicle.model.Image
+import com.anonymous.vehiclelistanddetails.data.vehicle.model.ImageMain
 import com.anonymous.vehiclelistanddetails.data.vehicle.model.VehicleRemote
 import com.anonymous.vehiclelistanddetails.domain.util.RemoteDateResponse
 import com.anonymous.vehiclelistanddetails.domain.vehicle.model.VehicleDomain
@@ -81,14 +83,14 @@ private fun getTestVehiclesList(): VehicleRemoteResult = VehicleRemoteResult(
             "30073f2a-84b2-5a3f-a105-52c2fcaac169",
             "Jaguar",
             "XF",
-            "2018",
+           ImageMain(main = Image("2018")),
             "3L S d V6"
         ),
         VehicleRemote(
             "30073f2a-84b2-5a3f-a105-52c2fcaac169",
             "Jaguar",
             "XF",
-            "2018",
+            ImageMain(main = Image("2018")),
             "3L S d V6"
         )
     )
