@@ -13,7 +13,8 @@ import com.anonymous.vehiclelistanddetails.ui.vehicles.adapter.VehiclesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VehiclesFragment : Fragment() {
-    private lateinit var adapter: VehiclesAdapter
+    private  var recycler: RecyclerView? = null
+    private  val adapter: VehiclesAdapter = VehiclesAdapter()
     private var item: View? = null
     private val viewModel by viewModel<VehiclesViewModel>()
 
@@ -28,16 +29,11 @@ class VehiclesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setObserver()
-        adapter = VehiclesAdapter()
-        collectVehicles()
+        initRecyclerView()
+        setViewModelObserver()
     }
 
-    private fun collectVehicles(){
-        viewModel.getVehicles()
-    }
-
-    private fun setObserver(){
+    private fun setViewModelObserver(){
         viewModel.vehiclesLiveData.observeForever {
             onVehiclesDataReceived(it)
         }
@@ -46,12 +42,15 @@ class VehiclesFragment : Fragment() {
     private fun onVehiclesDataReceived(result:UIResult<List<VehicleUI>>){
         when(result){
             is UIResult.Success -> {
-                val recycler = item?.findViewById<RecyclerView>(R.id.vehiclesRecycler)
-                recycler?.adapter = adapter
-                recycler?.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
-                adapter.setData(result.data)
+                   adapter.setData(result.data)
             }
             is UIResult.Loading -> {}
         }
+    }
+
+    private fun initRecyclerView(){
+        recycler = item?.findViewById(R.id.vehiclesRecycler)
+        recycler?.adapter = adapter
+        recycler?.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
     }
 }

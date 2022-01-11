@@ -15,8 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.*
-
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestWatcher
@@ -28,8 +26,9 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class VehicleListFeature {
     private lateinit var viewModel: VehiclesViewModel
+    @ExperimentalCoroutinesApi
     @get:Rule
-    val coroutineRule = MainCoroutineRule()
+    val coroutineRule by lazy { MainCoroutineRule() }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -43,16 +42,11 @@ class VehicleListFeature {
     ))
 
     private val vehiclesResult = UIResult.Success(vehicleUI, false)
-    private val showLoading = UIResult.Loading<List<VehicleUI>>(true)
 
     @Mock
     private lateinit var vehiclesLiveDataObserver: Observer<UIResult<List<VehicleUI>>>
 
-    @ExperimentalCoroutinesApi
-    @Before
-    fun init(){
-        viewModel = VehiclesViewModel(vehicleUseCase)
-    }
+
 
     @ExperimentalCoroutinesApi
     @Test
@@ -63,10 +57,10 @@ class VehicleListFeature {
         }
 
         given(vehicleUseCase.vehicles()).willReturn(successData)
+        viewModel = VehiclesViewModel(vehicleUseCase)
         viewModel.vehiclesLiveData.observeForever(vehiclesLiveDataObserver)
-        viewModel.getVehicles()
+
         val order = inOrder(vehiclesLiveDataObserver)
-        order.verify(vehiclesLiveDataObserver).onChanged(showLoading)
         order.verify(vehiclesLiveDataObserver).onChanged(vehiclesResult)
     }
 }

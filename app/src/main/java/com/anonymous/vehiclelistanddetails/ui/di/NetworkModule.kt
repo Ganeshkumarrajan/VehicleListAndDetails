@@ -1,6 +1,7 @@
 package com.anonymous.vehiclelistanddetails.ui.di
 
 import com.anonymous.vehiclelistanddetails.data.vehicle.api.VehicleNetworkService
+import com.anonymous.vehiclelistanddetails.data.vehicle_details.api.VehicleDetailsNetworkService
 import com.google.gson.GsonBuilder
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -12,7 +13,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 val  NetworkModule = module{
-    single { provideMovieAPIService(retrofit = get()) }
+    single { provideVehiclesAPIService(retrofit = get()) }
+    single { provideVehicleDetailsAPIService(retrofit = get()) }
     single { provideRetrofit(okHttpClient = get(), url = "https://www.cazoo.co.uk/api/") }
     single { provideOkHttpClient() }
 }
@@ -40,5 +42,8 @@ internal fun provideRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit 
         .build()
 }
 
-internal fun provideMovieAPIService(retrofit: Retrofit): VehicleNetworkService =
+internal fun provideVehiclesAPIService(retrofit: Retrofit): VehicleNetworkService =
     retrofit.create(VehicleNetworkService::class.java)
+
+internal fun provideVehicleDetailsAPIService(retrofit: Retrofit): VehicleDetailsNetworkService =
+    retrofit.create(VehicleDetailsNetworkService::class.java)

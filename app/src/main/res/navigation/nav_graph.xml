@@ -8,6 +8,21 @@
         android:id="@+id/blankFragment"
         android:name="com.anonymous.vehiclelistanddetails.ui.vehicles.VehiclesFragment"
         android:label="first"
-       tools:layout="@layout/vahicles_fragment_layout" />
+        tools:layout="@layout/vahicles_fragment_layout">
+        <action
+            android:id="@+id/list_to_details"
+            app:destination="@id/vehicleDetails">
+            <argument
+                android:name="id"
+                android:defaultValue=""
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/vehicleDetails"
+        android:name="com.anonymous.vehiclelistanddetails.ui.vehicleDetails.VehicleDetailsFragment"
+        android:label="first"
+        tools:layout="@layout/vahicles_fragment_layout" />
 
 </navigation>

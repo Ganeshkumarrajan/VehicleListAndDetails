@@ -13,28 +13,34 @@ import kotlinx.coroutines.launch
 class VehiclesViewModel(private val vehicleUseCase: VehicleUseCase) : ViewModel() {
     val vehiclesLiveData: MutableLiveData<UIResult<List<VehicleUI>>> = MutableLiveData()
 
-    fun getVehicles() {
+    init {
+        getVehicles()
+    }
+
+    private fun getVehicles() {
         viewModelScope.launch {
-             vehicleUseCase.vehicles().collect {
-                 vehiclesLiveData.value =  UIResult.Loading(true)
-                 parseVehicles(it)
-             }
+            vehicleUseCase.vehicles().collect {
+                vehiclesLiveData.value = UIResult.Loading(true)
+                parseVehiclesResponse(it)
+            }
         }
     }
 
-    private fun parseVehicles(data:RemoteDateResponse<List<VehicleDomain>>?){
-        when(data){
-           is  RemoteDateResponse.Success -> {
-               val vehicles =  data.data.map { vehicle ->
-                   vehicle.toUI()
-               }
-
-               vehiclesLiveData.value =  UIResult.Success(vehicles,false)
-           }
-           is RemoteDateResponse.Error -> {
-               vehiclesLiveData.value =  UIResult.Loading(false)
-           }
+    private fun parseVehiclesResponse(result: RemoteDateResponse<List<VehicleDomain>>?) {
+        when (result) {
+            is RemoteDateResponse.Success -> {
+                vehiclesLiveData.value = UIResult.Success(convertToVehicleDomainToVehicleUI(result.data), false)
+            }
+            is RemoteDateResponse.Error -> {
+                vehiclesLiveData.value = UIResult.Loading(false)
+            }
             else -> {}
         }
     }
+
+    private fun convertToVehicleDomainToVehicleUI(result: List<VehicleDomain>): List<VehicleUI> =
+        result.map { vehicle ->
+            vehicle.toUI()
+        }
+
 }

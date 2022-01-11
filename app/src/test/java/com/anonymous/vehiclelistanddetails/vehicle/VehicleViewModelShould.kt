@@ -11,7 +11,6 @@ import com.nhaarman.mockitokotlin2.given
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,13 +29,7 @@ class VehicleViewModelShould {
     @Mock
     private lateinit var vehicleUseCase: VehicleUseCase
 
-    lateinit var viewModel: VehiclesViewModel
-
-    @ExperimentalCoroutinesApi
-    @Before
-    fun init() {
-        viewModel = VehiclesViewModel(vehicleUseCase)
-    }
+    private lateinit var viewModel: VehiclesViewModel
 
     @ExperimentalCoroutinesApi
     @Test
@@ -45,9 +38,10 @@ class VehicleViewModelShould {
         val flowData = flow<RemoteDateResponse<List<VehicleDomain>>> {
             this.emit(RemoteDateResponse.Success(response))
         }
-        given(vehicleUseCase.vehicles()).willReturn(flowData)
-        viewModel.getVehicles()
 
+        given(vehicleUseCase.vehicles()).willReturn(flowData)
+
+        viewModel = VehiclesViewModel(vehicleUseCase)
         var data: UIResult<List<VehicleUI>>? = null
         viewModel.vehiclesLiveData.observeForever {
             data = it
